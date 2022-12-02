@@ -1,0 +1,11 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/obj
+/.vs/EcsNetTestAwsLogging/FileContentIndex
+/EcsNetTestAwsLogging.v3.ncrunchsolution.user
+/bin/Debug/net5.0
+/.vs/EcsNetTestAwsLogging/v17
+/aws-logger-errors.txt
+/ctempinternal-nlog-AspNetCore.txt

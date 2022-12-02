@@ -9,6 +9,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Amazon.Runtime.CredentialManagement;
+using Amazon.CloudWatch;
+using NLog.AWS.Logger;
+using NLog.Layouts;
+using NLog.Config;
+using LogLevel = NLog.LogLevel;
 
 namespace EcsNetTestAwsLogging
 {
@@ -19,6 +25,23 @@ namespace EcsNetTestAwsLogging
             var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
             var outEnv = Environment.GetEnvironmentVariables();
 
+            var awsTarget = new AWSTarget()
+            {
+                LogGroup = "dbTest",
+                Region = "eu-west-1",
+                // YOUR cred
+                Credentials = new Amazon.Runtime.BasicAWSCredentials("accessKey","secretKey"),
+                Layout = new SimpleLayout
+                {
+                    Text = "${longdate} ${level:uppercase=true} ${machinename} ${message} ${exception:format=tostring}"
+                }
+            };
+            var config = new LoggingConfiguration();
+            config.AddTarget("aws", awsTarget);
+            config.LoggingRules.Add(new LoggingRule("*", LogLevel.Debug, awsTarget));
+            LogManager.Configuration = config;
+
+            IAmazonCloudWatch cwClient = new AmazonCloudWatchClient(Amazon.RegionEndpoint.USWest2);
             logger.Info("Start Of Env Variables");
             logger.Info("----------------------");
 
