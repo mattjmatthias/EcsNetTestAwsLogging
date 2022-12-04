@@ -28,9 +28,9 @@ namespace EcsNetTestAwsLogging
             var awsTarget = new AWSTarget()
             {
                 LogGroup = "dbTest",
-                Region = "eu-west-1",
+                Region = "eu-west-2",
                 // YOUR cred
-                Credentials = new Amazon.Runtime.BasicAWSCredentials("accessKey","secretKey"),
+                //Credentials = new Amazon.Runtime.ECSTaskCredentials(),
                 Layout = new SimpleLayout
                 {
                     Text = "${longdate} ${level:uppercase=true} ${machinename} ${message} ${exception:format=tostring}"
@@ -41,7 +41,7 @@ namespace EcsNetTestAwsLogging
             config.LoggingRules.Add(new LoggingRule("*", LogLevel.Debug, awsTarget));
             LogManager.Configuration = config;
 
-            IAmazonCloudWatch cwClient = new AmazonCloudWatchClient(Amazon.RegionEndpoint.USWest2);
+            IAmazonCloudWatch cwClient = new AmazonCloudWatchClient(Amazon.RegionEndpoint.EUWest2);
             logger.Info("Start Of Env Variables");
             logger.Info("----------------------");
 
